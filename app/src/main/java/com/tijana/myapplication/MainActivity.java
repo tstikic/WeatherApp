@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap iconData;
 
     public enum Days implements Serializable {
-        MONDAY,
-        TUESDAY,
-        WEDNESDAY,
-        THURSDAY,
-        FRIDAY,
-        SATURDAY,
-        SUNDAY
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
