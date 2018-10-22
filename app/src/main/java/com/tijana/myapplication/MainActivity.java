@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    
     class CustomAdapter extends BaseAdapter {
 
 
@@ -145,17 +146,21 @@ public class MainActivity extends AppCompatActivity {
 
             Days day = Days.values()[position+1];
 
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-            TextView textView_name = (TextView) convertView.findViewById(R.id.textView_name);
-            TextView textView_max = (TextView) convertView.findViewById(R.id.textView_max);
-            TextView textView_min = (TextView) convertView.findViewById(R.id.textView_min);
-            textView_name.setText(day.toString());
+            ImageView imageView = findViewById(R.id.imageView);
+            TextView textView_name = findViewById(R.id.textView_name);
+            TextView textView_max = findViewById(R.id.textView_max);
+            TextView textView_min = findViewById(R.id.textView_min);
 
+
+            textView_name.setText(day.toString());
             new GetImageFromURL(imageView).execute(Utils.ICON_URL + (weatherList.get(position)).currentCondition.getIcon() + ".png");
             textView_max.setText((int) (weatherList.get(position + 1)).currentCondition.getMaxTemo() + "");
             textView_min.setText((int) (weatherList.get(position + 1)).currentCondition.getMinTemp() + "");
+
             return convertView;
         }
+
+
     }
 
 
@@ -234,16 +239,23 @@ public class MainActivity extends AppCompatActivity {
             ImageView mainImage = findViewById(R.id.image_view);
             TextView cityName = findViewById(R.id.search_view);
             TextView currentTemp = findViewById(R.id.degree);
+            TextView humidity = findViewById(R.id.humidity);
+            TextView pressure = findViewById(R.id.pressure);
+            TextView condition = findViewById(R.id.condition);
 
             cityName.setText((weatherList.get(0)).city.getName());
             currentTemp.setText((int)(weatherList.get(0)).currentCondition.getTemp() + Utils.degree);
             new GetImageFromURL(mainImage).execute(Utils.ICON_URL + (weatherList.get(0)).currentCondition.getIcon() + ".png");
 
+            condition.setText("Today: " + weatherList.get(0).currentCondition.getDescription());
+            humidity.setText("Humidity: " + (int)weatherList.get(0).currentCondition.getHumidity() + "%");
+            pressure.setText("Pressure: " + (int)weatherList.get(0).currentCondition.getPressure() + "pHa");
 
             ListView lview = findViewById(R.id.listView);
             CustomAdapter customAdapter = new CustomAdapter();
 
             lview.setAdapter(customAdapter);
+
 
 
             Log.w("numberList:", String.valueOf(weatherList.size()));
