@@ -8,6 +8,7 @@ public class Utils {
     public static  final String BASE_URL = "https://api.openweathermap.org/data/2.5/forecast?";
     public static  final String ICON_URL = "https://openweathermap.org/img/w/";
     public static final String apiId = "&appid=f0d7bcfe612d2d55b5831911602b80dd";
+    public static final String DEFAULT_CITY = "q=London";
     public static final String degree = "\u2103";
 
     public static JSONObject getObject (String tagName, JSONObject jsonObject)throws JSONException{

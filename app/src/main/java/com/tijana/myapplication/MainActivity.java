@@ -92,19 +92,20 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         } else {
-            renderWeatherData(searchCity.getCity());
+           // renderWeatherData(searchCity.getCity());
             client.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
 
-                            // Got last known location. In some rare situations this can be null.
+                            // Got last known location
                             if (location != null) {
                                 double lat = location.getLatitude();
+                                double lon = location.getLongitude();
 
-                                Log.w("loc:", String.valueOf(lat));
-                                // Logic to handle location object
+                                renderWeatherData("lat=" + lat + "&lon=" + lon);
                             } else {
+                                renderWeatherData(Utils.DEFAULT_CITY);
                                 Log.w("loc:", "Cannot find location");
 
                             }
@@ -146,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
             Days day = Days.values()[position+1];
 
-            ImageView imageView = findViewById(R.id.imageView);
-            TextView textView_name = findViewById(R.id.textView_name);
-            TextView textView_max = findViewById(R.id.textView_max);
-            TextView textView_min = findViewById(R.id.textView_min);
+            ImageView imageView = convertView.findViewById(R.id.imageView);
+            TextView textView_name = convertView.findViewById(R.id.textView_name);
+            TextView textView_max = convertView.findViewById(R.id.textView_max);
+            TextView textView_min = convertView.findViewById(R.id.textView_min);
 
 
             textView_name.setText(day.toString());
@@ -178,19 +179,19 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     //if permission is granted
-                    renderWeatherData("Belgrade");
                     client.getLastLocation()
                             .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                                 @Override
                                 public void onSuccess(Location location) {
 
-                                    // Got last known location. In some rare situations this can be null.
+                                    // Got last known location
                                     if (location != null) {
                                         double lat = location.getLatitude();
+                                        double lon = location.getLongitude();
 
-                                        Log.w("loc:", String.valueOf(lat));
-                                        // Logic to handle location object
+                                        renderWeatherData("lat=" + lat + "&lon=" + lon);
                                     } else {
+                                        renderWeatherData(Utils.DEFAULT_CITY);
                                         Log.w("loc:", "Cannot find location");
 
                                     }
@@ -199,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     //permission denied, default city shown
-                    renderWeatherData("London,UK");
+                    renderWeatherData(Utils.DEFAULT_CITY);
                 }
                 return;
             }
@@ -223,6 +224,9 @@ public class MainActivity extends AppCompatActivity {
         protected ArrayList<Weather> doInBackground(String[] strings) {
 
             String data = ((new WeatherHTTPClient()).getWeatherDataCity(strings[0]));
+            if (data==null){
+                data = ((new WeatherHTTPClient()).getWeatherDataCity(Utils.DEFAULT_CITY + "&units=metric"));
+            }
             weatherList = JSONWeather.getWeather(data);
             Log.v("Data:", (weatherList.get(0)).city.getName());
 
@@ -308,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 searchCity.setCity(cityInput.getText().toString());
 
                 String newCity = searchCity.getCity();
-                renderWeatherData(newCity);
+                renderWeatherData("q=" + newCity);
             }
         });
         builder.show();

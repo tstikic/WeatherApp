@@ -15,15 +15,9 @@ import Util.Utils;
 public class WeatherHTTPClient {
 
     public String getWeatherDataCity(String cityName) {
-     String url = Utils.BASE_URL + "q=" + cityName + Utils.apiId;
+     String url = Utils.BASE_URL + cityName + Utils.apiId;
      String weatherData = getWeatherData(url);
      return weatherData;
-    }
-
-    public String getWeatherDataCoord(float lat, float lon) {
-    String url = Utils.BASE_URL + "lat=" + lat + "&lon=" + lon + Utils.apiId;
-    String weatherData = getWeatherData(url);
-    return  weatherData;
     }
 
     public String getWeatherData (String url){
